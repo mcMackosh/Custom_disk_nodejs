@@ -1,0 +1,65 @@
+generator client { 
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_URL")
+}
+
+model User {
+  id          String       @id @default(uuid())
+  email       String       @unique
+  password    String
+  displayName String
+  isVerified  Boolean      @default(false) @map("is_verified")
+
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
+
+  memberships Membership[]
+
+  @@map("users")
+}
+
+model Space {
+  id          String       @id @default(uuid())
+  name        String
+  memberships Membership[]
+  spaceFile   SpaceFile[]
+
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
+
+  @@map("spaces")
+}
+
+model Membership {
+  id       String   @id @default(uuid())
+  userId   String   @map("user_id")
+  spaceId  String   @map("space_id")
+  role     UserRole @default(REGULAR)
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  space    Space    @relation(fields: [spaceId], references: [id], onDelete: Cascade)
+
+  @@map("memberships")
+}
+
+model SpaceFile {
+  id        String   @id @default(uuid())
+  spaceId   String
+  fileName  String   @map("file_id")
+  filePath  String   @map("file_path")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  space     Space    @relation(fields: [spaceId], references: [id], onDelete: Cascade)
+
+  @@map("files")
+}
+
+enum UserRole {
+  REGULAR
+  ADMIN
+}
