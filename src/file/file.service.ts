@@ -8,8 +8,6 @@ export class FileService {
     constructor(private prisma: PrismaService) { }
 
     async saveFileMetadata(file: Express.Multer.File, spaceId: string) {
-        // Збереження метаданих у БД
-        // Тепер пов'язуємо файл із певним простором через spaceId
         const saved = await this.prisma.spaceFile.create({
             data: {
                 fileName: file.filename,

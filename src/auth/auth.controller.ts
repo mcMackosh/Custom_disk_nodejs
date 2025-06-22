@@ -23,16 +23,14 @@ export class AuthController {
 			httpOnly: true,
 			secure: true,
 			sameSite: 'strict',
-			maxAge: 7 * 24 * 3600 * 1000, // 7 днів
+			maxAge: 7 * 24 * 3600 * 1000,
 		});
 		return { user, accessToken }
 	}
 
 	@Post('logout')
 	@HttpCode(HttpStatus.OK)
-	public async logout(
-		@Res({ passthrough: true }) res: Response
-	) {
+	public async logout() {
 		return this.authService.logout()
 	}
 

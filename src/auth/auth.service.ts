@@ -23,7 +23,7 @@ export class AuthService {
 
 		if (!existingUser || !existingUser.password) {
 			throw new NotFoundException(
-				'Пользователь не найден. Пожалуйста, проверьте введенные данные'
+				'User with this email does not exist. Please, register first or try another email.'
 			)
 		}
 
@@ -31,7 +31,7 @@ export class AuthService {
 
 		if (!isValidPassword) {
 			throw new UnauthorizedException(
-				'Неверный пароль. Пожалуйста, попробуйте еще раз или восстановите пароль, если забыли его.'
+				'Password is incorrect. Please, try again or reset your password.'
 			)
 		}
 

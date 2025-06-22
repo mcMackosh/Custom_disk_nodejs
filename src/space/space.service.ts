@@ -26,7 +26,6 @@ export class SpaceService {
     });
 
     if (!space) {
-      // Якщо простір не знайдений або користувач не є членом — кидаємо помилку
       throw new ForbiddenException('Access denied to this space');
     }
 

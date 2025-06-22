@@ -15,9 +15,8 @@ export class FileController {
   
   @UseInterceptors(FileInterceptor('file', {
     storage: diskStorage({
-      destination: './uploads', // директорія для збереження файлів
+      destination: './uploads',
       filename: (req, file, callback) => {
-        // змінюємо ім'я файлу, щоб уникнути колізій
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
         const ext = extname(file.originalname);
         const filename = `${uniqueSuffix}${ext}`;
@@ -29,7 +28,6 @@ export class FileController {
   @Authorization('REGULAR', 'ADMIN')
   @Post('upload')
   async uploadFile(@UploadedFile() file: Express.Multer.File, @Authorized('spaceId') spaceId: string) {
-    // тут можна зберегти метадані у базу, наприклад, через fileService
     return this.fileService.saveFileMetadata(file, spaceId);
   }
 
